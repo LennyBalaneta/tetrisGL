@@ -1,17 +1,5 @@
 #include "pieceFuncs.h"
 
-#define SIZEM 10
-#define SIZEN 20
-
-struct boardPlace{
-    int active;
-    float r;
-    float g;
-    float b;
-};
-
-struct boardPlace board[SIZEN][SIZEM];
-
 void initBoard() {
   int i, j;
   for(i=0 ; i<SIZEN ; i++){
@@ -82,7 +70,7 @@ void drawBoard() {
   for(i=0 ; i<SIZEN ; i++){
     for(j=0 ; j<SIZEM ; j++){
       if(board[i][j].active == 1) {
-        drawParallelepiped(-7.0f+(slotSize*j), -7.0f+(slotSize*(j+1)), -8.0f+(slotSize*i), -8.0f+(slotSize*(i+1)), 0.0f, 1.0f,
+        drawParallelepiped(-7.0f+(slotSize*j), -7.0f+slotSize+(slotSize*j), 8.0f-(slotSize*i), 8.0f-slotSize-(slotSize*i), 0.0f, 1.0f,
                             board[i][j].r, board[i][j].g, board[i][j].b);
       }
     }
@@ -98,13 +86,12 @@ void drawActivePiece() {
   x = activePiece->x;
 
   float baseX = -7.0f+(slotSize*x);
-  float baseY = -8.0f+(slotSize*y);
-
+  float baseY = 8.0f-(slotSize*y);
   glBegin(GL_QUADS);
   for(i = 0; i < 2; i++){
     for(j = 0; j < 4; j++){
       if(activePiece->type.layout[i][j] == 1) {
-        drawParallelepiped(baseX+(slotSize*i), baseX+slotSize+(slotSize*i), baseY+(slotSize*j), baseY+slotSize+(slotSize*j), 0.0f, 1.0f,
+        drawParallelepiped(baseX+(slotSize*j), baseX+slotSize+(slotSize*j), baseY-(slotSize*i), baseY-slotSize-(slotSize*i), 0.0f, 1.0f,
                             activePiece->type.r, activePiece->type.g, activePiece->type.b);
       }
     }

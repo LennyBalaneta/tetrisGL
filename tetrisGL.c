@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <math.h>
 #include "keyboardFuncs.h"
-#include "drawFuncs.h"
 
 void init (void) {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -29,9 +28,11 @@ void drawOnTheScreen(void) {
 
     drawHud();
 
+    //board[10][2].active = 1;
     drawBoard();
-
+    
     drawActivePiece();
+
 
     glutSwapBuffers();
 }

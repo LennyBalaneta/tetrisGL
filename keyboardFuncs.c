@@ -1,8 +1,10 @@
+#include "drawFuncs.h"
+
 void keyboard (unsigned char key, int x, int y) {
    switch (key) {
       case 'w':
       case 'W':
-      	 printf("w");
+      	pinThePieceOnTheBoard();
          break;
       case 'q':
       case 'Q':
@@ -36,12 +38,16 @@ void keyboardUp (unsigned char key, int x, int y) {
 void keyboardS (int key, int x, int y) {
    switch (key) {
       case GLUT_KEY_DOWN:
+         activePiece->y += 1;
          break;
       case GLUT_KEY_UP:
+         activePiece->y -= 1;
          break;
       case GLUT_KEY_RIGHT:
+         activePiece->x += 1;
          break;
       case GLUT_KEY_LEFT:
+         activePiece->x -= 1;
          break;
    }
 }

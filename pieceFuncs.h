@@ -5,3 +5,4 @@
 void printPieceType(struct piecetype piece);
 struct piecetype * createPieceTypes();
 struct piece * createPiece();
+void pinThePieceOnTheBoard();
