@@ -1,3 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "pieceFuncs.c"
+
+typedef struct piecetype PieceType;
+void printPieceType(PieceType piece);
+PieceType * createPieceTypes();

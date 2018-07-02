@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "pieceFuncs.h"
 
-typedef struct piecetype{
+struct piecetype{
     int layout[2][4];
-} PieceType;
+};
 
 PieceType * createPieceTypes(){
     static PieceType pieceTypes[7];
@@ -92,13 +93,13 @@ void printPieceType(PieceType piece){
 }
 
 int main(){
-    PieceType* tipoPeca = createPieceTypes();
+    /*PieceType* tipoPeca = createPieceTypes();
     int i;
 
     for(i=0; i<7; i++){
         printPieceType(tipoPeca[i]);
         printf("\n");
-    }
+    }*/
 
     return 0;
 }
