@@ -1,8 +1,10 @@
+#include "drawFuncs.h"
+
 void keyboard (unsigned char key, int x, int y) {
    switch (key) {
       case 'w':
       case 'W':
-      	 printf("w");
+      	pinThePieceOnTheBoard();
          break;
       case 'q':
       case 'Q':
@@ -36,12 +38,20 @@ void keyboardUp (unsigned char key, int x, int y) {
 void keyboardS (int key, int x, int y) {
    switch (key) {
       case GLUT_KEY_DOWN:
+         gameSpeed = DEFAULTGAMESPEED / 3;
          break;
       case GLUT_KEY_UP:
+         //rotate
          break;
       case GLUT_KEY_RIGHT:
+         if(collisionVerification(2) == 0) {
+            activePiece->x += 1;
+         }
          break;
       case GLUT_KEY_LEFT:
+         if(collisionVerification(4) == 0) {
+            activePiece->x -= 1;
+         }
          break;
    }
 }
@@ -49,8 +59,8 @@ void keyboardS (int key, int x, int y) {
 void keyboardSUp (int key, int x, int y) {
    switch (key) {
       case GLUT_KEY_DOWN:
+         gameSpeed = DEFAULTGAMESPEED;
          break;
-
       case GLUT_KEY_UP:
          break;
       case GLUT_KEY_RIGHT:

@@ -4,10 +4,6 @@
 #include <stdio.h>
 #include <math.h>
 #include "keyboardFuncs.h"
-#include "drawFuncs.h"
-
-#define sizeN 10
-#define sizeM 20
 
 void init (void) {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -15,6 +11,16 @@ void init (void) {
   glLoadIdentity();
   gluOrtho2D(-10, 10, -10, 10);
   glMatrixMode(GL_MODELVIEW);
+
+  // init the board
+  initBoard();
+
+  // init pTypes
+  pTypes = createPieceTypes();
+
+  // init the active piece
+  nextPiece = rand()%7;
+  activePiece = createPiece();
 }
 
 void drawOnTheScreen(void) {
@@ -22,6 +28,16 @@ void drawOnTheScreen(void) {
     glClear(GL_COLOR_BUFFER_BIT);
 
     drawHud();
+
+    drawBoard();
+
+    if(gameOver == 0) {
+        updatePiece();
+        fullLineVerification();
+    }
+    
+    drawActivePiece();
+
 
     glutSwapBuffers();
 }
