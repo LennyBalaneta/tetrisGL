@@ -30,6 +30,8 @@ struct boardPlace board[SIZEN][SIZEM];
 int timeCount = 0;
 int gameSpeed = DEFAULTGAMESPEED;//frames to move
 int gameOver = 0;
+int score = 0;
+int nextPiece = 0;
 
 struct piecetype * createPieceTypes(){
     //create all the piece types
@@ -147,8 +149,9 @@ struct piece * createPiece() {
     //create a new piece
     struct piece * p;
     p = malloc(sizeof(Piece));
-    int rnd = rand()%7;
-    p->type = pTypes[rnd];
+    p->type = pTypes[nextPiece];
+    nextPiece = rand()%7;
+    printf("NextPiece:%i\n", nextPiece);
     p->x = 4;
     p->y = 0;
     return p;
@@ -240,6 +243,40 @@ void updatePiece() {
             pinThePieceOnTheBoard();
         }
         timeCount = 0;
+    }
+}
+
+void resetLine(int line) {
+    int i, j;
+    for(j=0 ; j<SIZEM ; j++) {
+        board[line][j].active = 0;
+    }
+    for(i=line-1 ; i>=0 ; i--) {
+        for(j=0 ; j<SIZEM ; j++) {
+            board[i+1][j].active = board[i][j].active;
+            board[i][j].active = 0;
+        }
+    }
+}
+
+void fullLineVerification() {
+    int i, j, fullLine=0, qtdReset=0;
+    for(i=0 ; i<SIZEN ; i++) {
+        fullLine = 1;
+        for(j=0 ; j<SIZEM ; j++) {
+            if(board[i][j].active == 0) {
+                fullLine = 0;
+                break;
+            }
+        }
+        if(fullLine == 1) {//full line detected
+            resetLine(i);
+            qtdReset++;
+        }
+    }
+    if(qtdReset > 0) {
+        score += 100*qtdReset*qtdReset;
+        printf("Score:%i\n", score);
     }
 }
 

@@ -19,6 +19,7 @@ void init (void) {
   pTypes = createPieceTypes();
 
   // init the active piece
+  nextPiece = rand()%7;
   activePiece = createPiece();
 }
 
@@ -32,6 +33,7 @@ void drawOnTheScreen(void) {
 
     if(gameOver == 0) {
         updatePiece();
+        fullLineVerification();
     }
     
     drawActivePiece();
