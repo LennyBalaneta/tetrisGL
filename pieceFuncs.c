@@ -4,6 +4,7 @@
 
 #define SIZEM 10
 #define SIZEN 20
+#define DEFAULTGAMESPEED 30
 
 struct piecetype{
     int layout[2][4];
@@ -26,8 +27,12 @@ struct boardPlace{
 struct piecetype * pTypes = NULL;
 struct piece *activePiece = NULL;
 struct boardPlace board[SIZEN][SIZEM];
+int timeCount = 0;
+int gameSpeed = DEFAULTGAMESPEED;//frames to move
+int gameOver = 0;
 
 struct piecetype * createPieceTypes(){
+    //create all the piece types
     srand(time(NULL));
     struct piecetype *pieceTypes;
     pieceTypes = malloc(sizeof(struct piecetype) * 7);
@@ -127,6 +132,7 @@ struct piecetype * createPieceTypes(){
 }
 
 void printPieceType(struct piecetype piece){
+    //print the pieceType
     int i, j;
 
     for(i = 0; i < 2; i++){
@@ -138,18 +144,74 @@ void printPieceType(struct piecetype piece){
 }
 
 struct piece * createPiece() {
+    //create a new piece
     struct piece * p;
     p = malloc(sizeof(Piece));
     int rnd = rand()%7;
     p->type = pTypes[rnd];
-    //p->x = 5;//center
-    //p->y = 16;//top
     p->x = 4;
     p->y = 0;
     return p;
 }
 
+int collisionVerification(int dir) {
+    //Recieves a direction and return if there is a collision
+    //dir:
+    //0->noDirection, 1-> UP, 2-> RIGHT, 3-> DOWN, 4-> LEFT
+    //Return:
+    //0 -> no collision
+    //1 -> collision
+    int i, j;
+    for(i = 0; i < 2; i++){
+        for(j = 0; j < 4; j++){
+          if(activePiece->type.layout[i][j] == 1) {
+            //for each part of the active piece
+            switch(dir) {
+                //the same place
+                case 0:
+                    if(i+activePiece->y < 0 || i+activePiece->y >= SIZEN ||
+                        j+activePiece->x < 0 || j+activePiece->x >= SIZEM ||
+                        board[i+activePiece->y][j+activePiece->x].active){
+                        return 1;
+                    }
+                    break;
+                //UP
+                case 1:
+                    if(i+activePiece->y-1 < 0 || board[i+activePiece->y-1][j+activePiece->x].active){
+                        return 1;
+                    }
+                    break;
+                //RIGHT
+                case 2:
+                    if(j+activePiece->x+1 >= SIZEM || board[i+activePiece->y][j+activePiece->x+1].active){
+                        return 1;
+                    }
+                    break;
+                //DOWN
+                case 3:
+                    if(i+activePiece->y+1 >= SIZEN || board[i+activePiece->y+1][j+activePiece->x].active){
+                        return 1;
+                    }
+                    break;
+                //LEFT
+                case 4:
+                    if(j+activePiece->x-1 < 0 || board[i+activePiece->y][j+activePiece->x-1].active){
+                        return 1;
+                    }
+                    break;
+                //ERROR
+                default:
+                    return 1;
+            }
+            //board[i+activePiece->y][j+activePiece->x].active = 1;
+          }
+        }
+    }
+    return 0;
+}
+
 void pinThePieceOnTheBoard() {
+    //Pin the piece on the board
     int i, j;
     for(i = 0; i < 2; i++){
         for(j = 0; j < 4; j++){
@@ -163,9 +225,23 @@ void pinThePieceOnTheBoard() {
     }
     free(activePiece);
     activePiece = createPiece();
+    if(collisionVerification(0) == 1) {
+        printf("GAME OVER!!!\n");
+        gameOver = 1;
+    }
 }
 
-
+void updatePiece() {
+    timeCount++;
+    if(timeCount >= gameSpeed) {
+        if(collisionVerification(3) == 0) {
+            activePiece->y += 1;
+        }else {
+            pinThePieceOnTheBoard();
+        }
+        timeCount = 0;
+    }
+}
 
 
 

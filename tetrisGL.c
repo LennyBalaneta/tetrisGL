@@ -28,8 +28,11 @@ void drawOnTheScreen(void) {
 
     drawHud();
 
-    //board[10][2].active = 1;
     drawBoard();
+
+    if(gameOver == 0) {
+        updatePiece();
+    }
     
     drawActivePiece();
 
