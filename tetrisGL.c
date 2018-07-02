@@ -5,9 +5,7 @@
 #include <math.h>
 #include "keyboardFuncs.h"
 #include "drawFuncs.h"
-
-#define sizeN 10
-#define sizeM 20
+#include "pieceFuncs.h"
 
 void init (void) {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -15,6 +13,9 @@ void init (void) {
   glLoadIdentity();
   gluOrtho2D(-10, 10, -10, 10);
   glMatrixMode(GL_MODELVIEW);
+
+  // init the board
+  initBoard();
 }
 
 void drawOnTheScreen(void) {
@@ -22,6 +23,8 @@ void drawOnTheScreen(void) {
     glClear(GL_COLOR_BUFFER_BIT);
 
     drawHud();
+
+    drawBoard();
 
     glutSwapBuffers();
 }

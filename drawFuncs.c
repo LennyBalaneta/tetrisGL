@@ -1,3 +1,27 @@
+#define SIZEM 10
+#define SIZEN 20
+
+struct boardPlace{
+    int active;
+    float r;
+    float g;
+    float b;
+};
+
+struct boardPlace board[SIZEN][SIZEM];
+
+void initBoard() {
+  int i, j;
+  for(i=0 ; i<SIZEN ; i++){
+    for(j=0 ; j<SIZEM ; j++){
+      board[i][j].active = 0;
+      board[i][j].r = 0.0;
+      board[i][j].g = 0.0;
+      board[i][j].b = 1.0;
+    }
+  }
+}
+
 void drawParallelepiped(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax, float r, float g, float b) {
   //draw a parallelepiped using the coordinates and the color passed by parameter
   glColor3f(r, g, b);
@@ -47,3 +71,52 @@ void drawHud() {
   
   glEnd();
 }
+
+void drawBoard() {
+  int i, j;
+  board[18][1].active = 1;
+  float slotSize = 8.0 / SIZEM;
+  glBegin(GL_QUADS);
+  for(i=0 ; i<SIZEN ; i++){
+    for(j=0 ; j<SIZEM ; j++){
+      if(board[i][j].active == 1) {
+        drawParallelepiped(-7.0f+(slotSize*j), -7.0f+(slotSize*(j+1)), -8.0f+(slotSize*i), -8.0f+(slotSize*(i+1)), 0.0f, 1.0f,
+                            board[i][j].r, board[i][j].g, board[i][j].b);
+      }
+    }
+  }
+  glEnd();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

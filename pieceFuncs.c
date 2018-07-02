@@ -6,6 +6,12 @@ struct piecetype{
     int layout[2][4];
 };
 
+struct piece{
+    PieceType type;
+    int x;
+    int y;
+};
+
 PieceType * createPieceTypes(){
     static PieceType pieceTypes[7];
     //piecetype 1: I
