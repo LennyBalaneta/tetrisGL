@@ -1,3 +1,5 @@
+#include "pieceFuncs.h"
+
 #define SIZEM 10
 #define SIZEN 20
 
@@ -67,14 +69,14 @@ void drawHud() {
   drawParallelepiped(3.0f, 8.0f, 6.0f, 2.0f, 0.0f, 1.0f, 0.47f, 0.47f, 0.47f);
 
   //next piece grid
-  drawParallelepiped(3.0f, 8.0f, -1.0f, -5.0f, 0.0f, 1.0f, 0.47f, 0.47f, 0.47f); 
+  drawParallelepiped(3.0f, 8.0f, -1.0f, -5.0f, 0.0f, 1.0f, 0.47f, 0.47f, 0.47f);
   
   glEnd();
 }
 
 void drawBoard() {
   int i, j;
-  board[18][1].active = 1;
+
   float slotSize = 8.0 / SIZEM;
   glBegin(GL_QUADS);
   for(i=0 ; i<SIZEN ; i++){
@@ -88,7 +90,27 @@ void drawBoard() {
   glEnd();
 }
 
+void drawActivePiece() {
+  int i, j, x, y;
+  
+  float slotSize = 8.0 / SIZEM;
+  y = activePiece->y;
+  x = activePiece->x;
 
+  float baseX = -7.0f+(slotSize*x);
+  float baseY = -8.0f+(slotSize*y);
+
+  glBegin(GL_QUADS);
+  for(i = 0; i < 2; i++){
+    for(j = 0; j < 4; j++){
+      if(activePiece->type.layout[i][j] == 1) {
+        drawParallelepiped(baseX+(slotSize*i), baseX+slotSize+(slotSize*i), baseY+(slotSize*j), baseY+slotSize+(slotSize*j), 0.0f, 1.0f,
+                            activePiece->type.r, activePiece->type.g, activePiece->type.b);
+      }
+    }
+  }
+  glEnd();
+}
 
 
 

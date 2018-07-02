@@ -5,7 +5,6 @@
 #include <math.h>
 #include "keyboardFuncs.h"
 #include "drawFuncs.h"
-#include "pieceFuncs.h"
 
 void init (void) {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -16,6 +15,12 @@ void init (void) {
 
   // init the board
   initBoard();
+
+  // init pTypes
+  pTypes = createPieceTypes();
+
+  // init the active piece
+  activePiece = createPiece();
 }
 
 void drawOnTheScreen(void) {
@@ -25,6 +30,8 @@ void drawOnTheScreen(void) {
     drawHud();
 
     drawBoard();
+
+    drawActivePiece();
 
     glutSwapBuffers();
 }

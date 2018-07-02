@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "pieceFuncs.c"
 
-typedef struct piecetype PieceType;
-typedef struct piece Piece;
-void printPieceType(PieceType piece);
-PieceType * createPieceTypes();
+void printPieceType(struct piecetype piece);
+struct piecetype * createPieceTypes();
+struct piece * createPiece();

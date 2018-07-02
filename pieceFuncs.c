@@ -1,19 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "pieceFuncs.h"
+#include <time.h>
 
 struct piecetype{
     int layout[2][4];
-};
+    float r, g, b;
+}PieceType;
 
 struct piece{
-    PieceType type;
+    struct piecetype type;
     int x;
     int y;
-};
+}Piece;
 
-PieceType * createPieceTypes(){
-    static PieceType pieceTypes[7];
+struct piecetype * pTypes = NULL;
+struct piece *activePiece = NULL;
+
+struct piecetype * createPieceTypes(){
+    srand(time(NULL));
+    struct piecetype *pieceTypes;
+    pieceTypes = malloc(sizeof(struct piecetype) * 7);
+
     //piecetype 1: I
     pieceTypes[0].layout[0][0] = 1;
     pieceTypes[0].layout[0][1] = 1;
@@ -23,6 +30,9 @@ PieceType * createPieceTypes(){
     pieceTypes[0].layout[1][1] = 0;
     pieceTypes[0].layout[1][2] = 0;
     pieceTypes[0].layout[1][3] = 0;
+    pieceTypes[0].r = 0.0f;
+    pieceTypes[0].g = 1.0f;
+    pieceTypes[0].b = 0.0f;
 
     //piecetype2: T
     pieceTypes[1].layout[0][0] = 0;
@@ -33,6 +43,9 @@ PieceType * createPieceTypes(){
     pieceTypes[1].layout[1][1] = 1;
     pieceTypes[1].layout[1][2] = 1;
     pieceTypes[1].layout[1][3] = 0;
+    pieceTypes[1].r = 0.0f;
+    pieceTypes[1].g = 1.0f;
+    pieceTypes[1].b = 0.0f;
 
     //piecetype3: quadrado
     pieceTypes[2].layout[0][0] = 0;
@@ -43,6 +56,9 @@ PieceType * createPieceTypes(){
     pieceTypes[2].layout[1][1] = 1;
     pieceTypes[2].layout[1][2] = 1;
     pieceTypes[2].layout[1][3] = 0;
+    pieceTypes[2].r = 0.0f;
+    pieceTypes[2].g = 1.0f;
+    pieceTypes[2].b = 0.0f;
 
     //piecetype4: L
     pieceTypes[3].layout[0][0] = 0;
@@ -53,6 +69,9 @@ PieceType * createPieceTypes(){
     pieceTypes[3].layout[1][1] = 1;
     pieceTypes[3].layout[1][2] = 1;
     pieceTypes[3].layout[1][3] = 0;
+    pieceTypes[3].r = 0.0f;
+    pieceTypes[3].g = 1.0f;
+    pieceTypes[3].b = 0.0f;
 
     //piecetype5: L invertido
     pieceTypes[4].layout[0][0] = 1;
@@ -63,6 +82,9 @@ PieceType * createPieceTypes(){
     pieceTypes[4].layout[1][1] = 0;
     pieceTypes[4].layout[1][2] = 1;
     pieceTypes[4].layout[1][3] = 0;
+    pieceTypes[4].r = 0.0f;
+    pieceTypes[4].g = 1.0f;
+    pieceTypes[4].b = 0.0f;
 
     //piecetype6: N
     pieceTypes[5].layout[0][0] = 1;
@@ -73,6 +95,9 @@ PieceType * createPieceTypes(){
     pieceTypes[5].layout[1][1] = 1;
     pieceTypes[5].layout[1][2] = 1;
     pieceTypes[5].layout[1][3] = 0;
+    pieceTypes[5].r = 0.0f;
+    pieceTypes[5].g = 1.0f;
+    pieceTypes[5].b = 0.0f;
 
     //piecetype6: N invertido
     pieceTypes[6].layout[0][0] = 0;
@@ -83,11 +108,14 @@ PieceType * createPieceTypes(){
     pieceTypes[6].layout[1][1] = 1;
     pieceTypes[6].layout[1][2] = 0;
     pieceTypes[6].layout[1][3] = 0;
+    pieceTypes[6].r = 0.0f;
+    pieceTypes[6].g = 1.0f;
+    pieceTypes[6].b = 0.0f;
 
     return pieceTypes;
 }
 
-void printPieceType(PieceType piece){
+void printPieceType(struct piecetype piece){
     int i, j;
 
     for(i = 0; i < 2; i++){
@@ -98,14 +126,12 @@ void printPieceType(PieceType piece){
     }
 }
 
-int main(){
-    /*PieceType* tipoPeca = createPieceTypes();
-    int i;
-
-    for(i=0; i<7; i++){
-        printPieceType(tipoPeca[i]);
-        printf("\n");
-    }*/
-
-    return 0;
+struct piece * createPiece() {
+    struct piece * p;
+    p = malloc(sizeof(Piece));
+    int rnd = rand()%7;
+    p->type = pTypes[rnd];
+    p->x = 5;//center
+    p->y = 16;//top
+    return p;
 }
