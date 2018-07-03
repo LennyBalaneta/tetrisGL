@@ -4,7 +4,7 @@
 
 #define SIZEM 10
 #define SIZEN 20
-#define DEFAULTGAMESPEED 30
+#define DEFAULTGAMESPEED 50
 
 struct piecetype{
     int layout[2][4];
@@ -31,6 +31,7 @@ int timeCount = 0;
 int gameSpeed = DEFAULTGAMESPEED;//frames to move
 int gameOver = 0;
 int score = 0;
+int lines = 0;
 int nextPiece = 0;
 
 struct piecetype * createPieceTypes(){
@@ -41,7 +42,7 @@ struct piecetype * createPieceTypes(){
 
     //piecetype 1: I
     pieceTypes[0].layout[0][0] = 1;
-    pieceTypes[0].layout[0][1] = 1;
+    pieceTypes[0].layout[0][1] = 2;
     pieceTypes[0].layout[0][2] = 1;
     pieceTypes[0].layout[0][3] = 1;
     pieceTypes[0].layout[1][0] = 0;
@@ -50,7 +51,7 @@ struct piecetype * createPieceTypes(){
     pieceTypes[0].layout[1][3] = 0;
     pieceTypes[0].r = 0.0f;
     pieceTypes[0].g = 1.0f;
-    pieceTypes[0].b = 0.0f;
+    pieceTypes[0].b = 1.0f;
 
     //piecetype2: T
     pieceTypes[1].layout[0][0] = 0;
@@ -58,12 +59,12 @@ struct piecetype * createPieceTypes(){
     pieceTypes[1].layout[0][2] = 0;
     pieceTypes[1].layout[0][3] = 0;
     pieceTypes[1].layout[1][0] = 1;
-    pieceTypes[1].layout[1][1] = 1;
+    pieceTypes[1].layout[1][1] = 2;
     pieceTypes[1].layout[1][2] = 1;
     pieceTypes[1].layout[1][3] = 0;
-    pieceTypes[1].r = 1.0f;
-    pieceTypes[1].g = 1.0f;
-    pieceTypes[1].b = 0.0f;
+    pieceTypes[1].r = 0.5f;
+    pieceTypes[1].g = 0.0f;
+    pieceTypes[1].b = 0.5f;
 
     //piecetype3: quadrado
     pieceTypes[2].layout[0][0] = 0;
@@ -74,9 +75,9 @@ struct piecetype * createPieceTypes(){
     pieceTypes[2].layout[1][1] = 1;
     pieceTypes[2].layout[1][2] = 1;
     pieceTypes[2].layout[1][3] = 0;
-    pieceTypes[2].r = 0.0f;
+    pieceTypes[2].r = 1.0f;
     pieceTypes[2].g = 1.0f;
-    pieceTypes[2].b = 1.0f;
+    pieceTypes[2].b = 0.0f;
 
     //piecetype4: L
     pieceTypes[3].layout[0][0] = 0;
@@ -84,16 +85,16 @@ struct piecetype * createPieceTypes(){
     pieceTypes[3].layout[0][2] = 1;
     pieceTypes[3].layout[0][3] = 0;
     pieceTypes[3].layout[1][0] = 1;
-    pieceTypes[3].layout[1][1] = 1;
+    pieceTypes[3].layout[1][1] = 2;
     pieceTypes[3].layout[1][2] = 1;
     pieceTypes[3].layout[1][3] = 0;
     pieceTypes[3].r = 1.0f;
-    pieceTypes[3].g = 0.0f;
+    pieceTypes[3].g = 0.65f;
     pieceTypes[3].b = 0.0f;
 
     //piecetype5: L invertido
     pieceTypes[4].layout[0][0] = 1;
-    pieceTypes[4].layout[0][1] = 1;
+    pieceTypes[4].layout[0][1] = 2;
     pieceTypes[4].layout[0][2] = 1;
     pieceTypes[4].layout[0][3] = 0;
     pieceTypes[4].layout[1][0] = 0;
@@ -110,12 +111,12 @@ struct piecetype * createPieceTypes(){
     pieceTypes[5].layout[0][2] = 0;
     pieceTypes[5].layout[0][3] = 0;
     pieceTypes[5].layout[1][0] = 0;
-    pieceTypes[5].layout[1][1] = 1;
+    pieceTypes[5].layout[1][1] = 2;
     pieceTypes[5].layout[1][2] = 1;
     pieceTypes[5].layout[1][3] = 0;
-    pieceTypes[5].r = 1.0f;
-    pieceTypes[5].g = 0.0f;
-    pieceTypes[5].b = 1.0f;
+    pieceTypes[5].r = 0.0f;
+    pieceTypes[5].g = 0.5f;
+    pieceTypes[5].b = 0.0f;
 
     //piecetype6: N invertido
     pieceTypes[6].layout[0][0] = 0;
@@ -123,12 +124,12 @@ struct piecetype * createPieceTypes(){
     pieceTypes[6].layout[0][2] = 1;
     pieceTypes[6].layout[0][3] = 0;
     pieceTypes[6].layout[1][0] = 1;
-    pieceTypes[6].layout[1][1] = 1;
+    pieceTypes[6].layout[1][1] = 2;
     pieceTypes[6].layout[1][2] = 0;
     pieceTypes[6].layout[1][3] = 0;
-    pieceTypes[6].r = 0.5f;
-    pieceTypes[6].g = 0.2f;
-    pieceTypes[6].b = 0.8f;
+    pieceTypes[6].r = 1.0f;
+    pieceTypes[6].g = 0.0f;
+    pieceTypes[6].b = 0.0f;
 
     return pieceTypes;
 }
@@ -151,7 +152,6 @@ struct piece * createPiece() {
     p = malloc(sizeof(Piece));
     p->type = pTypes[nextPiece];
     nextPiece = rand()%7;
-    printf("NextPiece:%i\n", nextPiece);
     p->x = 4;
     p->y = 0;
     return p;
@@ -167,7 +167,7 @@ int collisionVerification(int dir) {
     int i, j;
     for(i = 0; i < 2; i++){
         for(j = 0; j < 4; j++){
-          if(activePiece->type.layout[i][j] == 1) {
+          if(activePiece->type.layout[i][j] != 0) {
             //for each part of the active piece
             switch(dir) {
                 //the same place
@@ -218,7 +218,7 @@ void pinThePieceOnTheBoard() {
     int i, j;
     for(i = 0; i < 2; i++){
         for(j = 0; j < 4; j++){
-          if(activePiece->type.layout[i][j] == 1) {
+          if(activePiece->type.layout[i][j] != 0) {
             board[i+activePiece->y][j+activePiece->x].active = 1;
             board[i+activePiece->y][j+activePiece->x].r = activePiece->type.r;
             board[i+activePiece->y][j+activePiece->x].g = activePiece->type.g;
@@ -229,7 +229,6 @@ void pinThePieceOnTheBoard() {
     free(activePiece);
     activePiece = createPiece();
     if(collisionVerification(0) == 1) {
-        printf("GAME OVER!!!\n");
         gameOver = 1;
     }
 }
@@ -254,7 +253,14 @@ void resetLine(int line) {
     for(i=line-1 ; i>=0 ; i--) {
         for(j=0 ; j<SIZEM ; j++) {
             board[i+1][j].active = board[i][j].active;
+            board[i+1][j].r = board[i][j].r;
+            board[i+1][j].g = board[i][j].g;
+            board[i+1][j].b = board[i][j].b;
+
             board[i][j].active = 0;
+            board[i][j].r = 0.0f;
+            board[i][j].g = 0.0f;
+            board[i][j].b = 0.0f;
         }
     }
 }
@@ -276,10 +282,6 @@ void fullLineVerification() {
     }
     if(qtdReset > 0) {
         score += 100*qtdReset*qtdReset;
-        printf("Score:%i\n", score);
+        lines += qtdReset;
     }
 }
-
-
-
-
